@@ -1,21 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import LongButton from '../../components/buttons/LongButton';
 import SquareButton from '../../components/buttons/SquareButton';
 import HomeHeader from '../../components/headers/HomeHeader';
-import LoginHeader from '../../components/headers/LoginHeader';
 
-const Home =()=> {
+const Home =( { navigation } )=> {
 
     return (
         <View style={styles.body}>
-            <HomeHeader></HomeHeader>
+            <HomeHeader logout_Action={()=> navigation.navigate('ChooseRole')}></HomeHeader>
 
             <View style={styles.separater}/>
 
             <View style={styles.align}>
                 <SquareButton Title_1='My' Title_2='Crops'></SquareButton>
-                <SquareButton Title_1='Market' Title_2='Conditions'></SquareButton>
+                <SquareButton Title_1='Market' Title_2='Conditions' press_Action={()=> navigation.navigate('MarketConditions')}></SquareButton>
             </View>
 
             <View style={styles.align}>

@@ -13,7 +13,7 @@ import AccountButton from '../buttons/AccountButton';
 import AccountPopup from '../popups/AccountPopup';
 
 
-const HomeHeader =()=> {
+const HomeHeader =( props )=> {
 
     const[accountPopup, setAccountPopup] = useState(false)
 
@@ -47,7 +47,7 @@ const HomeHeader =()=> {
                 <AccountButton press_Action={()=>setAccountPopup(true)}></AccountButton>
             </View>
 
-            {accountPopup && (<AccountPopup/>)}
+            {accountPopup && (<AccountPopup logout_User={props.logout_Action}/>)}
         </View>
     )
 }

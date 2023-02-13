@@ -42,7 +42,7 @@ const AccountPopup =( props )=> {
                 <View style={styles.logoutBox}>
                     <View style={styles.logoutHeader}>
                         <Text style={styles.logoutText}>Log Out</Text>
-                        <CloseButton></CloseButton>
+                        <CloseButton press_Action={()=> setClickedLogout(false)}></CloseButton>
                     </View>
 
                     <View style={styles.logoutContents}>
@@ -50,11 +50,11 @@ const AccountPopup =( props )=> {
 
                         <View style={styles.chooseButtons}>
                             <View style={{ flex: 1, paddingRight:3 }}>
-                                <PositiveButton Title='Log Out'></PositiveButton>
+                                <PositiveButton Title='Log Out' press_Action={props.logout_User}></PositiveButton>
                             </View>
 
-                            <View View style={{ flex: 1, paddingLeft:3 }}>
-                                <NegativeButton Title='Cancel'></NegativeButton>
+                            <View style={{ flex: 1, paddingLeft:3 }}>
+                                <NegativeButton Title='Cancel' press_Action={()=> setClickedLogout(false)}></NegativeButton>
                             </View>
                         </View>
                     </View>
