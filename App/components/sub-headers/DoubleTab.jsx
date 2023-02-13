@@ -14,6 +14,8 @@ const DoubleTab =( props )=> {
                 </TouchableOpacity>
             </View>
 
+            <View style={styles.separater}/>
+
             <View style={{ flex: 1}}>
                 <TouchableOpacity onPress={ props.press_RightAction }>
                     <View style={styles.button}>
@@ -27,16 +29,24 @@ const DoubleTab =( props )=> {
 
 const styles = StyleSheet.create({
     tabBar: {
-        height:28,
+        height:31,
         flexDirection:'row',
+        borderStyle:'solid',
+        borderWidth:2,
+        borderColor:'white'
+    },
+
+    separater: {
+        height:31,
+        width:2,
+        backgroundColor:'white'
     },
 
     button: {
         backgroundColor: '#005F41',
         alignItems: 'center',
         justifyContent:'center',
-        height:28,
-        flex:1
+        height:31,
     },
 
     title: {
