@@ -12,12 +12,17 @@ import {
 import BodyHeader from '../../../components/headers/BodyHeader';
 import DoubleTab from '../../../components/sub-headers/DoubleTab';
 import Request from '../../../API_Callings/Request';
+import AppUser from '../../../StaticData/AppUser';
 
 const CropAdvisiors =()=> {
+
+    const [advisiorID, setAdvisiorID] = useState('')
+
     const[leftTab, setLeftTab] = useState(true)
     const[advisiors, setAdvisiors] = useState([])
 
     useEffect(() => {
+
         const get_Professionals = async()=> {
             request = new Request
     
@@ -42,8 +47,9 @@ const CropAdvisiors =()=> {
 
     }, []);
 
-    const send_Request =(data)=> {
-        console.log(data)
+    const send_Request = async(id)=> {
+        setAdvisiorID(id)
+
     }
 
     return (
