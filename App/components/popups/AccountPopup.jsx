@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import {
     StyleSheet,
@@ -11,12 +11,19 @@ import {
 import CloseButton from '../buttons/CloseButton';
 import NegativeButton from '../buttons/NegativeButton';
 import PositiveButton from '../buttons/PositiveButton';
+import AppUser from '../../StaticData/AppUser';
 
 const AccountPopup =( props )=> {
 
     const { height } = useWindowDimensions();
-
     const[clickedLogout, setClickedLogout] = useState(false)
+
+    const[data, setData] = useState({id:'', name:'', email:''})
+
+    useEffect(() => {
+       const user = new AppUser
+       setData(user.fetch())
+    }, []);
 
     return (
         <View style={[styles.popup, {height}]}>
@@ -26,8 +33,8 @@ const AccountPopup =( props )=> {
                         <View style={styles.details}>
                             <Image style={styles.accountLogo} source={require('../../Assets/Icons/Account.png')}/>
                             <View>
-                                <Text style={styles.name}>F001: Jane Doe</Text>
-                                <Text style={styles.email}>janedoe@gmail.com</Text>
+                                <Text style={styles.name}>{data.id}: {data.name}</Text>
+                                <Text style={styles.email}>{data.email}</Text>
                             </View>
                         </View>
 

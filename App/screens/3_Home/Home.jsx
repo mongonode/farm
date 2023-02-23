@@ -1,21 +1,15 @@
-import React from 'react';
+import React , {useEffect} from 'react';
 import { View, StyleSheet} from 'react-native';
 import SquareButton from '../../components/buttons/SquareButton';
 import HomeHeader from '../../components/headers/HomeHeader';
-import Request from '../../API_Callings/Request';
 
 const Home =( { navigation } )=> {
 
-    const test=()=> {
-        const request = new Request
-
-        const data = {
-
-        }
-
-        const response = request.Add_Crop(data)
-
-    }
+    // For testing
+    useEffect(() => {
+       
+    }, []);
+    
 
     return (
         <View style={styles.body}>

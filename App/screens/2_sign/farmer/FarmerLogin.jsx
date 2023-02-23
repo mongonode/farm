@@ -17,6 +17,7 @@ import LoginHeader from '../../../components/headers/LoginHeader';
 import CredentialField from '../../../components/inputs/CredentialField';
 import PasswordField from '../../../components/inputs/PasswordField';
 import LoginWarning from '../../../components/popups/LoginWarning';
+import AppUser from '../../../StaticData/AppUser';
 
 const FarmerLogin =( { navigation } )=> {
 
@@ -30,10 +31,16 @@ const FarmerLogin =( { navigation } )=> {
 
     const [stage, setStage] = useState(['_DEFAULT'])
 
-    const logic_Handler =( job, current, error  )=> {
+    const logic_Handler =( job, current, error, id, name, email )=> {
         if(job == current) {
             switch (route.params) {
-                case 0: navigation.navigate('Home'); break;
+                case 0: {
+                            const app_user = new AppUser
+                            app_user.AppUser(id, name, email)
+                            navigation.navigate('Home'); 
+                            break; 
+                        }
+
                 case 1: navigation.navigate('CropAdvisory'); break;
                 case 2: navigation.navigate('MyCrops'); break;
             } 
@@ -62,9 +69,9 @@ const FarmerLogin =( { navigation } )=> {
 
             else {
                 switch (route.params) {
-                    case 0: logic_Handler(response.data, 'Farmer', 500); break;
-                    case 1: logic_Handler(response.data, 'Professional', 500); break;
-                    case 2: logic_Handler(response.data, 'Admin', 500); break;
+                    case 0: logic_Handler(response.data[0], 'Farmer', 500, response.data[1], response.data[2], response.data[3]); break;
+                    case 1: logic_Handler(response.data[0], 'Professional', 500, response.data[1], response.data[2], response.data[3]); break;
+                    case 2: logic_Handler(response.data[0], 'Admin', 500, response.data[1], response.data[2], response.data[3]); break;
                 }        
             }
         }
