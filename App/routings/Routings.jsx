@@ -10,6 +10,8 @@ import Home from "../screens/3_Home/Home";
 import MarketConditions from "../screens/4_Contents/MarketConditions/MarketConditions";
 import CropRecommendations from "../screens/4_Contents/CropRecommendations/CropRecommendations";
 import MyCrops from "../screens/4_Contents/MyCrops/MyCrops";
+import CropAdvisory from "../screens/5_Advisory/CropAdvisory";
+import CropAdvisiors from "../screens/4_Contents/CropAdvisiors/CropAdvisiors";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +28,8 @@ const Routings =()=> {
                 <Stack.Screen name='MarketConditions' component={MarketConditions} />
                 <Stack.Screen name='CropRecommendations' component={CropRecommendations} />
                 <Stack.Screen name='MyCrops' component={MyCrops} />
+                <Stack.Screen name='CropAdvisiors' component={CropAdvisiors} />
+                <Stack.Screen name='CropAdvisory' component={CropAdvisory} />
             </Stack.Navigator>
         </NavigationContainer>
     ) 

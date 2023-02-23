@@ -12,9 +12,9 @@ const ThreeColumn =( props )=> {
     return (
         <View>
             <View style={styles.titles}>
-                <View style={styles.tabCrop}><Text>Crop</Text></View>
-                <View style={styles.tabDate}><Text>Cultivation Start Date</Text></View>
-                <View style={styles.tabDate}><Text>{props.Need}</Text></View>
+                <View style={styles.tabCrop}><Text>{props.Col_1}</Text></View>
+                <View style={styles.tabDate}><Text>{props.Col_2}</Text></View>
+                <View style={styles.tabDate}><Text>{props.Col_3}</Text></View>
             </View>
 
             <View>

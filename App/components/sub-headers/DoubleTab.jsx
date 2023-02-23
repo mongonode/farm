@@ -19,7 +19,7 @@ const DoubleTab =( props )=> {
             <View style={{ flex: 1}}>
                 <TouchableOpacity onPress={ props.press_RightAction }>
                     <View style={styles.button}>
-                        <Text style={styles.title}>{ props.RightButton }</Text>
+                        <Text style={styles.title}>{props.RightButton}</Text>
                     </View>
                 </TouchableOpacity>
             </View> 

@@ -34,7 +34,7 @@ const FarmerLogin =( { navigation } )=> {
         if(job == current) {
             switch (route.params) {
                 case 0: navigation.navigate('Home'); break;
-                case 1: navigation.navigate('MyCrops'); break;
+                case 1: navigation.navigate('CropAdvisory'); break;
                 case 2: navigation.navigate('MyCrops'); break;
             } 
         }

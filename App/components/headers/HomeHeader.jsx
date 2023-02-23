@@ -40,7 +40,7 @@ const HomeHeader =( props )=> {
         <View style={styles.body}>
             <View style={styles.brand}>
                 <Image style={styles.logo} source={require('../../Assets/Logo/LogoSmall.png')}/>
-                <Text style={styles.text}>Agri Aid</Text>
+                <Text style={styles.text}>{props.Title}</Text>
             </View>
 
             <View style={styles.account}>

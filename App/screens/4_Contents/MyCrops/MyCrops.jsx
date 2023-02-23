@@ -19,7 +19,11 @@ const MyCrops =()=> {
             
             <View>
                 <Text style={styles.text}>Crop Cultivation Plan</Text>
-                <ThreeColumn Need='Harvesting Date'></ThreeColumn>
+                <ThreeColumn
+                        Col_1 = 'Crop'
+                        Col_2 = 'Cultivation Start Date'
+                        Col_3 = 'Harvesting Date'>   
+                </ThreeColumn>
             </View>
             
 

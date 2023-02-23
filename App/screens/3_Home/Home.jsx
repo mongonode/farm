@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet} from 'react-native';
 import SquareButton from '../../components/buttons/SquareButton';
 import HomeHeader from '../../components/headers/HomeHeader';
 import Request from '../../API_Callings/Request';
@@ -19,7 +19,7 @@ const Home =( { navigation } )=> {
 
     return (
         <View style={styles.body}>
-            <HomeHeader logout_Action={()=> navigation.navigate('ChooseRole')}></HomeHeader>
+            <HomeHeader Title='Agri Aid' logout_Action={()=> navigation.navigate('ChooseRole')}></HomeHeader>
 
             <View style={styles.separater}/>
 
@@ -30,10 +30,8 @@ const Home =( { navigation } )=> {
 
             <View style={styles.align}>
                 <SquareButton Title_1='Crop' Title_2='Recommendations' press_Action={()=> navigation.navigate('CropRecommendations')}></SquareButton>
-                <SquareButton Title_1='Crop' Title_2='Advisiors'></SquareButton>
+                <SquareButton Title_1='Crop' Title_2='Advisiors'  press_Action={()=> navigation.navigate('CropAdvisiors')}></SquareButton>
             </View>
-
-            <Button title='add' onPress={test}></Button>
         </View>
     ) 
 }
