@@ -8,6 +8,8 @@ import FarmerRegister from "../screens/2_sign/farmer/FarmerRegister";
 import FarmerLogin from "../screens/2_sign/farmer/FarmerLogin";
 import Home from "../screens/3_Home/Home";
 import MarketConditions from "../screens/4_Contents/MarketConditions/MarketConditions";
+import CropRecommendations from "../screens/4_Contents/CropRecommendations/CropRecommendations";
+import MyCrops from "../screens/4_Contents/MyCrops/MyCrops";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +24,8 @@ const Routings =()=> {
                 <Stack.Screen name='FarmerLogin' component={FarmerLogin} />
                 <Stack.Screen name='Home' component={Home} />
                 <Stack.Screen name='MarketConditions' component={MarketConditions} />
+                <Stack.Screen name='CropRecommendations' component={CropRecommendations} />
+                <Stack.Screen name='MyCrops' component={MyCrops} />
             </Stack.Navigator>
         </NavigationContainer>
     ) 

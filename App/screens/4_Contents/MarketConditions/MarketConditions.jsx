@@ -1,25 +1,56 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import PositiveButton from '../../../components/buttons/PositiveButton';
 import BodyHeader from '../../../components/headers/BodyHeader';
-import SelectionDropdown from '../../../components/inputs/SelectionDropdown';
 import DoubleTab from '../../../components/sub-headers/DoubleTab';
+import CurrentMarket from './Tabs/CurrentMarket';
+import ForetastedMarket from './Tabs/ForetastedMarket';
+import Request from '../../../API_Callings/Request';
 
 const MarketConditions =()=> {
 
     const[leftTab, setLeftTab] = useState(true)
+    const[cropName, setCropName] = useState(['_DEFAULT'])
+    const[marketData, setMarketData] = useState([0, 0, 0])
 
-    const Crops = [
-        'A','B', 'C', 'D'
-    ]
+    useEffect(() => {
+        const get_CropLIST = async()=> {
+            request = new Request
+    
+            try {
+                const response = await request.List()
+    
+                if(response != 0) {
+                    setCropName(response.data)
+                }
+    
+                else {
 
-    const Regions = [
-        'a', 'b', 'c', 'd'
-    ]
+                }
+            }
+    
+            catch (err) {
+                console.log(err)
+            }
+        }
 
-    const[crop, setCrop] = useState('')
-    const[region, setRegion] = useState('')
+        get_CropLIST()
+
+    }, []);
+
+    const get_Conditions = async( fetch )=> {
+        const request = new Request
+
+        try {
+            const response = await request.Conditions(fetch)
+            let market = [response.data.price, response.data.demand, response.data.supply]
+            setMarketData(market)
+        }
+
+        catch {
+
+        }
+    }
 
     return (
         <View style={{flex:1}}>
@@ -32,15 +63,21 @@ const MarketConditions =()=> {
                     press_RightAction={()=> setLeftTab(false)}>
             </DoubleTab>
 
-            <View style={styles.form}>
-                <SelectionDropdown Label='Select Crop' List={Crops} Selected={setCrop}></SelectionDropdown>
-                <SelectionDropdown Label='Select Region'></SelectionDropdown>
+            { !leftTab && (
+                <ForetastedMarket 
+                    CropList={cropName} 
+                    posting_Data={(data)=>get_Conditions(data)} 
+                    Market={marketData}>
+                </ForetastedMarket>
+            )}
 
-                <View style={{marginHorizontal:'30%'}}>
-                    <PositiveButton Title='Enter' press_Action={()=>console.log(crop)}></PositiveButton>
-                </View>
-            </View>
-
+            { leftTab && (
+                <CurrentMarket 
+                    CropList={cropName} 
+                    posting_Data={(data)=>get_Conditions(data)} 
+                    Market={marketData}>
+                </CurrentMarket>
+            )}
         </View>
     ) 
 }
@@ -49,7 +86,8 @@ const styles = StyleSheet.create({
     form: {
         marginHorizontal:'9%',
         height:145,
-        justifyContent:'space-between'
+        justifyContent:'space-between',
+        marginVertical:60
     }
 })
 

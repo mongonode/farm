@@ -1,9 +1,21 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import SquareButton from '../../components/buttons/SquareButton';
 import HomeHeader from '../../components/headers/HomeHeader';
+import Request from '../../API_Callings/Request';
 
 const Home =( { navigation } )=> {
+
+    const test=()=> {
+        const request = new Request
+
+        const data = {
+
+        }
+
+        const response = request.Add_Crop(data)
+
+    }
 
     return (
         <View style={styles.body}>
@@ -12,14 +24,16 @@ const Home =( { navigation } )=> {
             <View style={styles.separater}/>
 
             <View style={styles.align}>
-                <SquareButton Title_1='My' Title_2='Crops'></SquareButton>
+                <SquareButton Title_1='My' Title_2='Crops' press_Action={()=> navigation.navigate('MyCrops')}></SquareButton>
                 <SquareButton Title_1='Market' Title_2='Conditions' press_Action={()=> navigation.navigate('MarketConditions')}></SquareButton>
             </View>
 
             <View style={styles.align}>
-                <SquareButton Title_1='Crop' Title_2='Recommendations'></SquareButton>
+                <SquareButton Title_1='Crop' Title_2='Recommendations' press_Action={()=> navigation.navigate('CropRecommendations')}></SquareButton>
                 <SquareButton Title_1='Crop' Title_2='Advisiors'></SquareButton>
             </View>
+
+            <Button title='add' onPress={test}></Button>
         </View>
     ) 
 }

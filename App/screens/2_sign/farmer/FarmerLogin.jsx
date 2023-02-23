@@ -1,5 +1,7 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRoute } from '@react-navigation/native';
+import Request from '../../../API_Callings/Request';
 
 import {
     Text,
@@ -14,24 +16,87 @@ import LongButton from '../../../components/buttons/LongButton';
 import LoginHeader from '../../../components/headers/LoginHeader';
 import CredentialField from '../../../components/inputs/CredentialField';
 import PasswordField from '../../../components/inputs/PasswordField';
+import LoginWarning from '../../../components/popups/LoginWarning';
 
 const FarmerLogin =( { navigation } )=> {
 
+    const route = useRoute()
+    const [header, setHeader] = useState('')
+
     const [userEmail, setUserEmail] = useState('')
     const [userPassword, setUserPassword] = useState('')
+    const [warning, setWarning] = useState(false)
+    const [error, setError] = useState('')
 
-    const submit_Values =()=> {
-        const user = {email: userEmail, password: userPassword}
+    const [stage, setStage] = useState(['_DEFAULT'])
 
-        //Validate and to data base
-        console.log(user)
-        navigation.navigate('Home')
+    const logic_Handler =( job, current, error  )=> {
+        if(job == current) {
+            switch (route.params) {
+                case 0: navigation.navigate('Home'); break;
+                case 1: navigation.navigate('MyCrops'); break;
+                case 2: navigation.navigate('MyCrops'); break;
+            } 
+        }
+
+        else {
+            setWarning(true)
+            setError(error)
+
+            const _solver = [job, current]
+            setStage(_solver)
+        }
     }
+
+    const submit_Values = async()=> {
+        const user = {email: userEmail, password: userPassword}
+        request = new Request
+
+        try {
+            const response = await request.Login(user)
+
+            if(response.data == 0 || response.data == 2) {
+                setWarning(true)
+                setError(response.data)
+            }
+
+            else {
+                switch (route.params) {
+                    case 0: logic_Handler(response.data, 'Farmer', 500); break;
+                    case 1: logic_Handler(response.data, 'Professional', 500); break;
+                    case 2: logic_Handler(response.data, 'Admin', 500); break;
+                }        
+            }
+        }
+
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(()=> {
+
+        if(route.params == 0) {
+            setHeader('Farmer Log In');
+        }
+            else if(route.params == 1) {
+                setHeader('Agricultural Professional Log In');
+            }
+                else if(route.params == 2) {
+                    setHeader('Site Administrator Log In');
+                }
+                    else {
+                        console.log('_ERROR')
+                    }
+
+    }, []);
    
     return (
         <View style={styles.body}>
-            <LoginHeader Title='Farmer Log In'></LoginHeader>
+            <LoginHeader Title={header}></LoginHeader>
 
+            {warning && <LoginWarning Error={error} Job={stage} Close={()=>setWarning(false)}></LoginWarning>}
+            
             <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
                 <ScrollView>
 

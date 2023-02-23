@@ -1,14 +1,18 @@
 import React from 'react';
+import { useRoute } from '@react-navigation/native';
 
 import {
   StyleSheet,
   View,
-  Image
+  Image,
+  Button
 } from 'react-native';
 
 import LongButton from '../../components/buttons/LongButton';
 
 const ChooseSign =( { navigation } )=> {
+    const route = useRoute()
+
 
     return (
         <View style={styles.body}>
@@ -21,8 +25,8 @@ const ChooseSign =( { navigation } )=> {
 
             <View style={styles.buttonSet}>
                 <View style={styles.alignButtons}>
-                    <LongButton Title="Register" press_Action={()=> navigation.navigate('FarmerRegister')}></LongButton>
-                    <LongButton Title="Log In" press_Action={()=> navigation.navigate('FarmerLogin')}></LongButton>
+                    <LongButton Title="Register" press_Action={()=> navigation.navigate('FarmerRegister', route.params)}></LongButton>
+                    <LongButton Title="Log In" press_Action={()=> navigation.navigate('FarmerLogin', route.params)}></LongButton>
                 </View>
             </View>
         </View>

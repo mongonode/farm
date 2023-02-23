@@ -21,8 +21,9 @@ const ChooseRole =( { navigation } )=> {
 
             <View style={styles.buttonSet}>
                 <View style={styles.alignButtons}>
-                    <LongButton Title="I am a Farmer" press_Action={()=> navigation.navigate('ChooseSign')}></LongButton>
-                    <LongButton Title="I am an Agricultural Professional"></LongButton>
+                    <LongButton Title="I am a Farmer" press_Action={()=> navigation.navigate('ChooseSign', 0)}></LongButton>
+                    <LongButton Title="I am an Agricultural Professional" press_Action={()=> navigation.navigate('ChooseSign', 1)}></LongButton>
+                    <LongButton Title="I am a Site Administrator" press_Action={()=> navigation.navigate('ChooseSign', 2)}></LongButton>
                 </View>
             </View>
         </View>
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     },
 
     alignButtons : {
-        height: 200,
+        height: 260,
         justifyContent:'space-around'
     },
 

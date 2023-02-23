@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
     },
 
     text : {
-      marginVertical:9,
+      marginVertical:12,
       color: 'white',
-      fontSize: 32,
+      fontSize: 23,
       fontWeight: 600,
     }
 })
