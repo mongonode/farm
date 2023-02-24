@@ -15,6 +15,7 @@ import BodyHeader from '../../../components/headers/BodyHeader';
 import DoubleTab from '../../../components/sub-headers/DoubleTab';
 import Request from '../../../API_Callings/Request';
 import AppUser from '../../../StaticData/AppUser';
+import RequestBox from '../../../components/popups/RequestBox';
 
 const CropAdvisiors =()=> {
 
@@ -22,6 +23,11 @@ const CropAdvisiors =()=> {
 
     const[leftTab, setLeftTab] = useState(true)
     const[advisiors, setAdvisiors] = useState([])
+    const[professional, setProfessional] = useState({id:'', name:''})
+    const[click, setClick] = useState(false)
+
+    const[text, setText] = useState('')
+    const[selectedCrop, setSelectedCrop] = useState('')
 
     useEffect(() => {
 
@@ -50,21 +56,54 @@ const CropAdvisiors =()=> {
     }, []);
 
     const send_Request =(id, name)=> {
+        setProfessional({id:id, name:name})
+        setClick(true)
+    }
+
+    const submit_Message =( msg )=> {
+        setText(msg)
+    }
+
+    const post_Message =( type )=> {
+
+        if(type == 'request') {
+            send_Message(`I am a ${selectedCrop} farmer, ${text}`)
+        }
+
+        else if(type == 'chat') {
+            send_Message(`${text}`)
+        }
+    }
+
+    const send_Message =async(message)=> {
+
         const messageBody = {
             f_ID: app_user.fetch().id,
             f_Name: app_user.fetch().name,
-            a_ID: id,
-            a_Name: name,
+            a_ID: professional.id,
+            a_Name: professional.name,
             s_TYPE: "farmer",
-            m_TEXT: "Hiiii"
+            m_TEXT: message
         }
 
-        socket.emit("chat", messageBody)
+        await socket.emit("chat", messageBody)
     }
+    
 
     return (
         <View>
             <BodyHeader Title='Crop Advisiory'></BodyHeader>
+
+            {click && (
+                <RequestBox 
+                    Name={professional.name} 
+                    Close={()=> setClick(false)} 
+                    Value={text} 
+                    get_Value={submit_Message} 
+                    Selected={setSelectedCrop} 
+                    Post={()=> post_Message('request')}>
+                </RequestBox>
+            )}
 
             <DoubleTab 
                     LeftButton='Agricultural Professionals' 
