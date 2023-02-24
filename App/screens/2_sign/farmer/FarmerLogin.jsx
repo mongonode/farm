@@ -57,7 +57,7 @@ const FarmerLogin =( { navigation } )=> {
 
     const submit_Values = async()=> {
         const user = {email: userEmail, password: userPassword}
-        request = new Request
+        const request = new Request
 
         try {
             const response = await request.Login(user)

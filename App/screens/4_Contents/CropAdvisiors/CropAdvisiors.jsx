@@ -1,5 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import io from 'socket.io-client';
+const socket = io.connect("http://192.168.8.182:3001")
 
 import {
   StyleSheet,
@@ -16,7 +18,7 @@ import AppUser from '../../../StaticData/AppUser';
 
 const CropAdvisiors =()=> {
 
-    const [advisiorID, setAdvisiorID] = useState('')
+    const app_user = new AppUser
 
     const[leftTab, setLeftTab] = useState(true)
     const[advisiors, setAdvisiors] = useState([])
@@ -24,7 +26,7 @@ const CropAdvisiors =()=> {
     useEffect(() => {
 
         const get_Professionals = async()=> {
-            request = new Request
+            const request = new Request
     
             try {
                 const response = await request.Advice()
@@ -47,9 +49,17 @@ const CropAdvisiors =()=> {
 
     }, []);
 
-    const send_Request = async(id)=> {
-        setAdvisiorID(id)
+    const send_Request =(id, name)=> {
+        const messageBody = {
+            f_ID: app_user.fetch().id,
+            f_Name: app_user.fetch().name,
+            a_ID: id,
+            a_Name: name,
+            s_TYPE: "farmer",
+            m_TEXT: "Hiiii"
+        }
 
+        socket.emit("chat", messageBody)
     }
 
     return (
@@ -57,41 +67,42 @@ const CropAdvisiors =()=> {
             <BodyHeader Title='Crop Advisiory'></BodyHeader>
 
             <DoubleTab 
-                    LeftButton='Current Market Conditions' 
+                    LeftButton='Agricultural Professionals' 
                     press_LeftAction={()=> setLeftTab(true)}
-                    RightButton='Foretasted Market Conditions'
+                    RightButton='Requests'
                     press_RightAction={()=> setLeftTab(false)}>
             </DoubleTab>
 
-            <View style={styles.grid}>
-                <View style={styles.title}>
-                    <Text style={styles.text_1}>Agricultural Professional</Text>
-                    <Text style={styles.text_2}>Designation</Text>
-                    <Text style={styles.text_3}>Rating</Text>
-                    <Text style={styles.text_4}>Chat</Text>
-                </View>
+            {leftTab && (
+                <View style={styles.grid}>
+                    <View style={styles.title}>
+                        <Text style={styles.text_1}>Agricultural Professional</Text>
+                        <Text style={styles.text_2}>Designation</Text>
+                        <Text style={styles.text_3}>Rating</Text>
+                        <Text style={styles.text_4}>Chat</Text>
+                    </View>
 
-                <View>
-                    {advisiors.map((advisior)=> (
-                        <View style={styles.title}>
-                            <View style={styles.name}>
-                                <Image style={styles.image} source={require('../../../Assets/Icons/Account.png')}/>
-                                <Text style={styles.content_1}>{advisior.name}</Text>
+                    <View>
+                        {advisiors.map((advisior)=> (
+                            <View style={styles.title}>
+                                <View style={styles.name}>
+                                    <Image style={styles.image} source={require('../../../Assets/Icons/Account.png')}/>
+                                    <Text style={styles.content_1}>{advisior.name}</Text>
+                                </View>
+
+                                <Text style={styles.content_2}>{advisior.designation}</Text>
+                                <Text style={styles.content_3}>{advisior.rating}</Text>
+
+                                <View style={styles.chat}>
+                                    <TouchableOpacity onPress={()=>send_Request(advisior.id, advisior.name)}>
+                                        <Image style={styles.message} source={require('../../../Assets/Icons/Message.png')}/>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-
-                            <Text style={styles.content_2}>{advisior.designation}</Text>
-                            <Text style={styles.content_3}>{advisior.rating}</Text>
-
-                            <View style={styles.chat}>
-                                <TouchableOpacity onPress={()=>send_Request(advisior.id)}>
-                                    <Image style={styles.message} source={require('../../../Assets/Icons/Message.png')}/>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    ))}
+                        ))}
+                    </View>
                 </View>
-            </View>
-
+            )}
         </View>
     )
 }
