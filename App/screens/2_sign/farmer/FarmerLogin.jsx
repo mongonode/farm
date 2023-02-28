@@ -41,7 +41,12 @@ const FarmerLogin =( { navigation } )=> {
                             break; 
                         }
 
-                case 1: navigation.navigate('CropAdvisory'); break;
+                case 1: {
+                            const app_user = new AppUser
+                            app_user.AppUser(id, name, email)
+                            navigation.navigate('CropAdvisory'); 
+                            break;
+                        }
                 case 2: navigation.navigate('MyCrops'); break;
             } 
         }
