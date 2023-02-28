@@ -1,22 +1,76 @@
-import React, {useEffect} from 'react';
-
+import React, {useState, useRef} from 'react';
+import io from 'socket.io-client';
+const socket = io.connect("http://192.168.8.182:3001")
+import AppUser from '../../StaticData/AppUser';
 
 import {
   StyleSheet,
   TouchableOpacity,
   View,
   Text,
-  Image
+  Image,
+  TextInput,
+  Button,
+  ScrollView
 } from 'react-native';
 
 const Receivers =( props )=> {
 
     const openChat = props.OpenChat
-    const messages = props.Data
+    const [messages, setMessages] = useState(props.Data)
 
-    useEffect(() => {
-        console.log(messages)
-    }, []);
+    const [text, setText] = useState('')
+
+    const scrollViewRef = useRef();
+
+    const send_Message =async(message)=> {
+
+        const app_user = new AppUser
+
+        if (props.Role == 'Advisior') {
+            const messageBody = {
+                f_ID: props.Id,
+                f_Name: props.Sender,
+                a_ID: app_user.fetch().id,
+                a_Name: app_user.fetch().name,
+                s_TYPE: "professional",
+                m_TEXT: text
+            }
+
+            const newMsg =  {
+                                message:text,
+                                time:'',
+                                type:"professional"
+                            }
+                        
+            setMessages([...messages, newMsg])
+            scrollViewRef.current.scrollToEnd({ animated: true });
+            await socket.emit("chat", messageBody)
+        }
+
+        if (props.Role == 'Farmer') {
+            const messageBody = {
+                f_ID: app_user.fetch().id,
+                f_Name: app_user.fetch().name,
+                a_ID: props.Id,
+                a_Name: props.Sender,
+                s_TYPE: "farmer",
+                m_TEXT: text
+            }
+
+            const newMsg =  {
+                                message:text,
+                                time:'',
+                                type:"farmer"
+                            }
+                        
+            setMessages([...messages, newMsg])
+            scrollViewRef.current.scrollToEnd({ animated: true });
+            await socket.emit("chat", messageBody)
+        }
+
+    }
+
     return (
         <View>
             <TouchableOpacity onPress={props.press_Action}>
@@ -35,7 +89,7 @@ const Receivers =( props )=> {
 
             {openChat && (
                 <View style={styles.chatBox}>
-                    <View style={styles.scroller}>
+                    <ScrollView ref={scrollViewRef} style={styles.scroller}>
                         {messages.map((msg) => (
                             <View>
                                 {props.Role == 'Advisior' && (
@@ -55,10 +109,23 @@ const Receivers =( props )=> {
                                 )}
                             </View>
                         ))}
-                    </View>
+                    </ScrollView>
 
                     <View>
+                        <TextInput
+                            style={styles.input}
+                            multiline={true}
+                            numberOfLines={1}
+                            textAlignVertical="top"
+                            paddingLeft={10}
+                            scrollEnabled={true}
+                            placeholder='Message'
+                            placeholderTextColor={'grey'}
+                            value={text}
+                            onChangeText={(enter)=> setText(enter)}>
+                        </TextInput>
 
+                        <Button title='pressss' onPress={send_Message}></Button>
                     </View>
                 </View>
             )}
@@ -68,6 +135,7 @@ const Receivers =( props )=> {
 }
 
 const styles = StyleSheet.create({
+
     button: {
         marginHorizontal:6,
         marginVertical:6,
@@ -80,6 +148,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent:'space-between',
         height:38,
+    },
+
+    input: {
+        borderStyle:'solid',
+        borderWidth:2,
+        borderColor:'grey',
+        color:'black',
+        height:35,
+        
     },
 
     title: {
@@ -136,7 +213,8 @@ const styles = StyleSheet.create({
         maxWidth:220,
         paddingHorizontal:7,
         marginVertical:6,
-        paddingVertical:6
+        paddingVertical:6,
+        borderRadius:6
     },
 
     farmer : {

@@ -6,7 +6,7 @@ const socket = io.connect("http://192.168.8.182:3001")
 import {
   StyleSheet,
   View,
-  Text
+  ScrollView
 } from 'react-native';
 import HomeHeader from '../../components/headers/HomeHeader';
 import Receivers from '../../components/messages/Receivers';
@@ -17,6 +17,7 @@ const CropAdvisory =()=> {
   const [allMessages, setAllMessages] = useState([])
   const [showChat, setShowChat] = useState(false)
   const [chatExpand, setChatEpand] = useState(false)
+  
 
   const show_Chatting =async(index)=> {
 
@@ -76,7 +77,7 @@ const CropAdvisory =()=> {
             <HomeHeader Title='Crop Advisory'></HomeHeader>
          
             {showChat && (
-              <View>
+              <ScrollView>
                  {allMessages.map((sender, index) => (
                     <Receivers 
                         Sender={sender.name} 
@@ -87,7 +88,7 @@ const CropAdvisory =()=> {
                         Role='Advisior'>
                     </Receivers>
                  ))}      
-              </View>
+              </ScrollView>
             )}
         </View>
     )

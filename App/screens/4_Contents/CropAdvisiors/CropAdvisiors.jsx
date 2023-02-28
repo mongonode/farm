@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import Receivers from '../../../components/messages/Receivers';
 import io from 'socket.io-client';
 const socket = io.connect("http://192.168.8.182:3001")
 
@@ -29,6 +30,28 @@ const CropAdvisiors =()=> {
     const[text, setText] = useState('')
     const[selectedCrop, setSelectedCrop] = useState('')
 
+    const [allMessages, setAllMessages] = useState([])
+    const [showChat, setShowChat] = useState(false)
+    const [chatExpand, setChatEpand] = useState(false)
+
+    const show_Chatting =async(index)=> {
+
+        try {
+          setChatEpand(!chatExpand)
+        }
+        
+        catch (err){
+          console.log(err)
+        }
+    
+        setAllMessages(current => {
+          const remake = [...current]
+          remake[index] = {...remake[index], chat:chatExpand}
+          return remake
+        })
+      }
+
+
     useEffect(() => {
 
         const get_Professionals = async()=> {
@@ -53,6 +76,17 @@ const CropAdvisiors =()=> {
 
         get_Professionals()
 
+        //Getting Chat
+        socket.emit("previous", {role:0, need: app_user.fetch().id})
+
+        socket.on("inbox", (allMSGS)=> {
+
+            if (allMSGS != 0) {
+                setAllMessages(allMSGS)
+                setShowChat(true)
+            }
+        })
+
     }, []);
 
     const send_Request =(id, name)=> {
@@ -64,15 +98,8 @@ const CropAdvisiors =()=> {
         setText(msg)
     }
 
-    const post_Message =( type )=> {
-
-        if(type == 'request') {
-            send_Message(`I am a ${selectedCrop} farmer, ${text}`)
-        }
-
-        else if(type == 'chat') {
-            send_Message(`${text}`)
-        }
+    const post_Message =()=> {
+        send_Message(`I am a ${selectedCrop} farmer, ${text}`)
     }
 
     const send_Message =async(message)=> {
@@ -101,7 +128,7 @@ const CropAdvisiors =()=> {
                     Value={text} 
                     get_Value={submit_Message} 
                     Selected={setSelectedCrop} 
-                    Post={()=> post_Message('request')}>
+                    Post={post_Message}>
                 </RequestBox>
             )}
 
@@ -141,6 +168,25 @@ const CropAdvisiors =()=> {
                         ))}
                     </View>
                 </View>
+            )}
+
+            {!leftTab && (
+                <View>
+                    {showChat && (
+                        <View>
+                            {allMessages.map((sender, index) => (
+                                <Receivers 
+                                    Sender={sender.name} 
+                                    Id={sender.id} 
+                                    Data={sender.data} 
+                                    press_Action={()=>show_Chatting(index)}
+                                    OpenChat={sender.chat}
+                                    Role='Farmer'>
+                                </Receivers>
+                            ))}  
+                        </View>
+                    )}    
+             </View>
             )}
         </View>
     )
